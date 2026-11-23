@@ -1,0 +1,12 @@
+{
+  "name": "9",
+  "version": "1.0.0",
+  "description": "Servicio Web para validar cédula dominicana usando el algoritmo Módulo 10",
+  "main": "brain.js",
+  "scripts": {
+    "start": "node brain.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iD-validator-xpress</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        body::before{
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+             background-image: url('https://listindiario.com/files/main_image/uploads/2023/02/27/653a78a6cfd20.jpeg');
+            
+                background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+            
+            opacity: 0.4;
+            z-index: -1;
+        }
+        .contenedor {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 { color: #1e3a8a; margin-bottom: 10px; }
+        p { color: #555; font-size: 14px; }
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 96%;
+        }
+        button:hover { background-color: #152c6b; }
+        .resultado {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+        }
+        .valida { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .invalida { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h2>Validador de Cédula RD</h2>
+        <p>Ingrese una cédula dominicana (con o sin guiones)</p>
+        <input type="text" id="cedulaInput" placeholder="Ej: 001-1234567-8" maxlength="13">
+        <button onclick="consultarServicio()">Validar Cédula</button>
+        <div id="resultadoBox" class="resultado"></div>
+    </div>
+
+    <script>
+        async function consultarServicio() {
+            const cedula = document.getElementById('cedulaInput').value;
+            const box = document.getElementById('resultadoBox');
+
+            try {
+                const respuesta = await fetch('/api/validar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cedula })
+                });
+
+                const data = await respuesta.json();
+                box.style.display = 'block';
+                box.textContent = data.mensaje;
+                box.className = 'resultado ' + (data.valida ? 'valida' : 'invalida');
+            } catch (error) {
+                box.style.display = 'block';
+                box.textContent = 'Error al conectar con el servicio web.';
+                box.className = 'resultado invalida';
+            }
+        }
+    </script>
+</body>
+</html>
