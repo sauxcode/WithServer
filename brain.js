@@ -65,18 +65,19 @@ function validarCedulaModulo10(cedula) {
     const residuo = suma % 10;
     const digitoVerificadorEsperado = residuo === 0 ? 0 : 10 - residuo;
     const digitoVerificadorReal = parseInt(cedulaLimpia[10], 10);
-
     const cedulaFormateada = `${cedulaLimpia.slice(0, 3)}-${cedulaLimpia.slice(3, 10)}-${cedulaLimpia[10]}`;
-
+	
     // 6. Comparar con el último dígito de la cédula
     if (digitoVerificadorEsperado === digitoVerificadorReal) {
-	const ciudadano = padronSimulado[cedulaLimpia] || '[ (X) Ciudadano no registrado entre los voluntarios ]';
-        return {
-            cedula: cedulaFormateada,
-            valida: true,
-            nombre: ciudadano,
-            mensaje:  `Es correcta su cédula, titular: ${ciudadano}` 
-        };
+		const numid = padronSimulado[cedulaLimpia];
+		const ciudadanoStatus = numid ? `Es correcta su cédula, titular: ${numid}` : '[ (X) Correcta, pero titular no está entre los voluntarios ]';
+
+		return {
+   			 cedula: cedulaFormateada,
+   			 valida: Boolean(numid),
+    		nombre: numid || null,
+    		mensaje: ciudadanoStatus
+		};
     } else {
         return {
             cedula: cedulaFormateada,
